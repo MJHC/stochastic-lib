@@ -3,6 +3,7 @@
 
 using namespace stochastic;
 
+// 6. Display simulation trajectories of how the amounts change. External tools/libraries can be used to visualize.
 namespace plt = matplotlibcpp;
 void stochastic::plot_time_series(std::string title, std::string file, const std::vector<double>& time,
                                   const std::vector<std::string>& labels, const std::vector<std::vector<int>>& series)
@@ -46,6 +47,7 @@ std::string stochastic::rgb_to_hex(int r, int g, int b)
     return "#" + hexRed + hexGreen + hexBlue;
 }
 
+// 2. Provide pretty-printing of the reaction network in a) human readable format and b) network graph (e.g. Fig. 4).
 void stochastic::write_dot_graph(std::ostream& os, const graph_t& graph)
 {
     os << "digraph {\n";

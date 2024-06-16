@@ -4,6 +4,7 @@ using namespace stochastic;
 
 namespace stochastic
 {
+    // 4. Implement the stochastic simulation (Alg. 1) of the system using the reaction rules.
     double Simulator::_compute_delay(const ReactionRule& rule, std::shared_ptr<SymbolTable<std::string, int>>& state)
     {
         thread_local std::mt19937 gen{seed == 0 ? rd() : seed};
@@ -36,6 +37,13 @@ namespace stochastic
                 state->get(s.name())++;
     }
 
+    /*
+    7. Implement a generic support for (any) user-supplied state observer function object or provide a lazy trajectory
+        generation interface (coroutine). The observer itself should be supplied by the user/test and not be part of
+        the library. To demonstrate the generic support, estimate the peak of hospitalized agents in Covid-19 example
+        without storing entire trajectory data. Record the peak hospitalization values for population sizes of NNJ and
+        NDK.
+    */
     std::generator<const time_series_t> Simulator::simulate(double endtime)
     {
         const auto& rules = vessel.reactionRules();
@@ -63,6 +71,10 @@ namespace stochastic
         }
     }
 
+    /*
+    8. Implement support for multiple computer cores by parallelizing the computation of several simulations at the
+    same time. Estimate the likely (average) value of the hospitalized peak over 100 simulations.
+    */
     std::generator<const n_time_series_t> Simulator::simulate_n_queue(double endtime, int sim_count)
     {
         std::vector<std::future<void>> futures{};

@@ -21,6 +21,7 @@ namespace stochastic
         std::shared_ptr<Term> term() const { return _term; }
     };
 
+    // 1. The library should overload operators to support the reaction rule typesetting directly in C++ code.
     inline ReactionExpr operator+(const ReactionExpr& lhs, const ReactionExpr& rhs)
     {
         return ReactionExpr(std::make_shared<BinaryTerm>(lhs.term(), op_t::plus, rhs.term()));

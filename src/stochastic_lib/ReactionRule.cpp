@@ -2,6 +2,8 @@
 
 namespace stochastic
 {
+    // 2. Provide pretty-printing of the reaction network in a) human readable format and b) network graph (e.g. Fig.
+    // 4).
     std::ostream& operator<<(std::ostream& os, const ReactionRule& rule)
     {
         for (size_t i = 0; i < rule.reactants.size(); ++i) {

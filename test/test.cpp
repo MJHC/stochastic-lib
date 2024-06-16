@@ -10,7 +10,7 @@
 
 #include "stochastic_lib.hpp"
 #include "example_sim.hpp"
-
+// 9. Implement unit tests (e.g. test symbol table methods, their failure cases, and pretty-printing of reaction rules).
 using namespace stochastic;
 
 class PrintExprVisitor : public ReactionExprVisitor

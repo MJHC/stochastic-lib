@@ -22,6 +22,8 @@ namespace stochastic
     public:
         Vessel() {}
         const SymbolTable<std::string, int>& symbols() const { return sys; }
+        // 2. Provide pretty-printing of the reaction network in a) human readable format and b) network graph (e.g.
+        // Fig. 4).
         const graph_t networkGraph() const { return graph.graph(); }
         const std::vector<ReactionRule>& reactionRules() const { return rules; }
 
