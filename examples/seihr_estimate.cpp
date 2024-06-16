@@ -6,6 +6,14 @@
 #define NDK     5'822'763
 #define NNJ     589'755
 
+/*
+7. Implement a generic support for (any) user-supplied state observer function object or provide a lazy trajectory
+generation interface (coroutine). The observer itself should be supplied by the user/test and not be part of
+the library. To demonstrate the generic support, estimate the peak of hospitalized agents in Covid-19 example
+without storing entire trajectory data. Record the peak hospitalization values for population sizes of NNJ and
+NDK.
+*/
+
 int main()
 {
     auto seihr = stochastic::seihr(10000);

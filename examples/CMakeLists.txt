@@ -4,7 +4,7 @@ function(add_custom_executable target source)
     target_include_directories(${target} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/../include/stochastic_lib)
 endfunction()
 
-# Demonstrate the application of the library on the three examples (shown in Fig. 1, 2, 3).
+# 5. Demonstrate the application of the library on the three examples (shown in Fig. 1, 2, 3).
 add_custom_executable(abc abc.cpp)
 add_custom_executable(seihr seihr.cpp)
 add_custom_executable(seihr_estimate seihr_estimate.cpp)
