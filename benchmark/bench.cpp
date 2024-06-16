@@ -5,26 +5,80 @@
 #include <iostream>
 #include <vector>
 
-static std::vector<int> make_random(int size){
-        std::random_device rd;
-        std::mt19937 gen(rd());
-        std::uniform_int_distribution dist{};
-        auto vec = std::vector<int>{size};
-        for(int i = 0; i < size; i++)
-            vec.emplace_back(dist(gen));
-        return vec;
-}
+#include "stochastic_lib.hpp"
+#include "example_sim.hpp"
 
-static void bench_bench(benchmark::State& state){
-    const auto n1 = state.range(0);
-    for (auto _ : state){
+#define ENDTIME 100
+
+static void bench_simulation_n_queue(benchmark::State& state)
+{
+    for (auto _ : state) {
         state.PauseTiming();
-        auto vec = make_random(n1);
+
+        auto seihr = stochastic::seihr(state.range(0));
+        stochastic::Simulator sim{seihr};
         state.ResumeTiming();
-        std::sort(vec.begin(), vec.end());
-        benchmark::DoNotOptimize(vec.data());
+
+        for (const auto& serie : sim.simulate_n_queue(ENDTIME, 100)) {
+            continue;
+        }
         benchmark::ClobberMemory();
     }
 }
 
-BENCHMARK(bench_bench)->Arg(100'000);
+static void bench_simulation_n(benchmark::State& state)
+{
+    for (auto _ : state) {
+        state.PauseTiming();
+
+        auto seihr = stochastic::seihr(state.range(0));
+        stochastic::Simulator sim{seihr};
+        state.ResumeTiming();
+
+        for (const auto& serie : sim.simulate_n(ENDTIME, 100)) {
+            continue;
+        }
+        benchmark::ClobberMemory();
+    }
+}
+
+static void bench_simulation_n_cpu_cores(benchmark::State& state)
+{
+    for (auto _ : state) {
+        state.PauseTiming();
+
+        auto seihr = stochastic::seihr(state.range(0));
+        stochastic::Simulator sim{seihr};
+        state.ResumeTiming();
+
+        for (const auto& serie : sim.simulate_n_cpu_cores(ENDTIME, 100)) {
+            continue;
+        }
+        benchmark::ClobberMemory();
+    }
+}
+
+static void bench_simulation_single_core(benchmark::State& state)
+{
+    for (auto _ : state) {
+        state.PauseTiming();
+
+        auto seihr = stochastic::seihr(state.range(0));
+        stochastic::Simulator sim{seihr};
+        state.ResumeTiming();
+
+        for (int i = 0; i < state.range(1); i++) {
+            for (const auto& serie : sim.simulate(ENDTIME)) {
+                continue;
+            }
+        }
+
+        benchmark::ClobberMemory();
+    }
+}
+
+BENCHMARK(bench_simulation_n_queue)->Arg(10'000)->Name("100 Multi Sim Queue 10'000");
+BENCHMARK(bench_simulation_n_cpu_cores)->Arg(10'000)->Name("100 Multi Sim CPU Cores 10'000");
+BENCHMARK(bench_simulation_n)->Arg(10'000)->Name("100 Multi Sim 10'000");
+BENCHMARK(bench_simulation_single_core)->Args({10'000, 100})->Name("100 Single Core Sim 10'000");
+BENCHMARK(bench_simulation_single_core)->Args({10'000, 1})->Name("1 Single Core Sim 10'000");
