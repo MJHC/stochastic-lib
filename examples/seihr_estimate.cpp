@@ -18,18 +18,22 @@ int main()
         v.push_back(series.second.second->get("H"));
     }
 
-    std::cout << "10000 over 100 simulations (H peak): " << *std::max_element(v.begin(), v.end()) << "\n";
+    std::cout << "10000 over 100 simulations (H peak): "
+              << static_cast<double>(std::accumulate(v.begin(), v.end(), 0)) / v.size() << "\n";
 
     v.clear();
-    seihr = stochastic::seihr(NNJ);
-    for (const auto& series : sim.simulate(ENDTIME)) {
+
+    auto nnj = stochastic::seihr(NNJ);
+    stochastic::Simulator nnjsim{nnj, 5};
+    for (const auto& series : nnjsim.simulate(ENDTIME)) {
         v.push_back(series.second->get("H"));
     }
     std::cout << "NNJ (H peak): " << *std::max_element(v.begin(), v.end()) << "\n";
 
     v.clear();
-    seihr = stochastic::seihr(NDK);
-    for (const auto& series : sim.simulate(ENDTIME)) {
+    auto ndk = stochastic::seihr(NDK);
+    stochastic::Simulator ndksim{ndk, 5};
+    for (const auto& series : ndksim.simulate(ENDTIME)) {
         v.push_back(series.second->get("H"));
     }
     std::cout << "NDK (H peak): " << *std::max_element(v.begin(), v.end()) << "\n";
